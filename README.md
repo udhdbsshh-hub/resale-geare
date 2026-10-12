@@ -206,4 +206,32 @@ render();
 updateCart();
 </script>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = "https://plqvfamfolqffowknhnv.supabase.co/rest/v1/";
+const SUPABASE_KEY = "sb_publishable_bDh3lEwhh1y1lB-PohrIfQ_nxg7y0h1";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+async function loadStoreProducts() {
+  const { data, error } = await supabaseClient
+    .from("products")
+    .select("*")
+    .eq("active", true)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Ошибка загрузки товаров:", error.message);
+    return;
+  }
+
+  console.log("Товары из базы:", data);
+}
+
+loadStoreProducts();
+</script>
+
 </html>
